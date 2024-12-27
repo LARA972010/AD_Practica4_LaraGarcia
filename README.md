@@ -1,6 +1,6 @@
 # 🛍️ Proyecto de Pedidos con Hibernate 🛒
 
-¡Bienvenido al proyecto de pedidos en línea! Este sistema está implementado con **Hibernate** para la persistencia de datos y permite a los clientes realizar pedidos de productos, elegir colores y tallas, aplicar descuentos y finalizar el pedido con una dirección de entrega. ¡Vamos a hacerlo todo más fácil y organizado! 😎
+Este proyecto implementa un sistema de pedidos en línea utilizando **Hibernate** para la persistencia de datos y permite a los clientes realizar pedidos de productos, elegir colores y tallas, aplicar descuentos y finalizar el pedido con una dirección de entrega. ¡Todo gestionado eficientemente con una base de datos relacional! 🌟
 
 ## 🚀 Requisitos
 
@@ -22,6 +22,7 @@ El cliente ingresa su **DNI** y **contraseña** para acceder a su cuenta. Una ve
 3. **Selección del producto**: El cliente selecciona el producto que desea comprar. 🛒
 
 #### Características adicionales:
+- Los productos se gestionan a través de la tabla `PRODUCTO`, donde se almacenan los detalles como **nombre**, **precio**, **descuento**, **color**, y **talla**.
 - Se gestionan productos con precios y descuentos calculados dinámicamente. 🎯
 - Los productos se cargan desde la base de datos usando **Hibernate**. 🗃️
 
@@ -38,7 +39,7 @@ El cliente ingresa su **DNI** y **contraseña** para acceder a su cuenta. Una ve
 2. **Selección**: El cliente elige la combinación que más le guste. 😍
 
 #### Características adicionales:
-- Cada combinación de **talla** y **color** es un registro en la base de datos asociado a un producto. 🔄
+- Cada combinación de **talla** y **color** es un registro en la tabla `PRODUCTO` y se asocia a un **producto específico** a través de las columnas `talla` y `color`. 🌈
 - **Hibernate** se usa para consultar las opciones disponibles en la base de datos. 📊
 
 ### 1.3 🔹 **Apartado 3: Finalización del pedido** 🏁
@@ -48,36 +49,37 @@ Cuando el cliente ha terminado de seleccionar productos, se le da la opción de 
 #### Pasos:
 1. **Opción de finalizar pedido**: Si el cliente desea finalizar, se le muestran las **direcciones** disponibles. 🏠
 2. **Selección de dirección**: El cliente selecciona la dirección de envío. 📍
-3. **Crear el pedido**: El sistema guarda el pedido en la base de datos con la información elegida. 📝
+3. **Crear el pedido**: El sistema guarda el pedido en la tabla `PEDIDO` con la información elegida (cliente, estado, dirección, fecha). 📝
 4. **Cambio de estado del producto**: El producto cambia de estado (¡ya fue comprado!). ✅
-5. **Historial de pedidos**: El sistema guarda un registro histórico de todos los pedidos. 📚
+5. **Historial de pedidos**: El sistema guarda un registro histórico de todos los pedidos en la tabla `HISTORICO_PEDIDO`. 📚
 
 #### Características adicionales:
-- El sistema gestiona el estado de los productos para reflejar si están **disponibles** o **vendidos**. 🔄
-- Se crea un **historial de pedidos** para que los clientes puedan consultar sus compras anteriores. 📅
+- El sistema gestiona el estado de los productos a través de la tabla `ESTADO_PRODUCTO`, que refleja si los productos están disponibles o vendidos. 🔄
+- Se crea un **historial de pedidos** en la tabla `HISTORICO_PEDIDO` para cada compra realizada, permitiendo realizar un seguimiento de los cambios de estado. 🕒
 - Si el cliente decide seguir comprando, el sistema lo redirige al menú de productos. 🔄
 
-## 🗂️ Base de Datos
+## 🗂️ Relación con la Base de Datos
 
-El sistema usa una **base de datos relacional** (por ejemplo, **MySQL**) para almacenar la información de productos, opciones (colores y tallas), direcciones de clientes, y pedidos. La estructura básica de las tablas incluye:
+La base de datos está estructurada para gestionar eficientemente los datos de clientes, productos, pedidos y más. Aquí te dejamos las tablas clave que se utilizan:
 
-- **Clientes**: Información de los clientes (DNI, nombre, contraseña). 👤
-- **Productos**: Datos de los productos, precios y descuentos. 💰
-- **Opciones de producto**: Combinaciones de tallas y colores. 🌈
-- **Pedidos**: Información de los pedidos realizados (productos, cantidades y dirección). 📝
-- **Historial de pedidos**: Registro histórico de todos los pedidos. 🕒
+- **CLIENTE**: Contiene información personal de los clientes (DNI, nombre, contraseña, etc.).
+- **DIRECCION**: Contiene las direcciones de envío asociadas a cada cliente. 🏠
+- **ESTADO_PEDIDO**: Define el estado de un pedido (por ejemplo, "pendiente", "enviado", etc.). 📦
+- **PEDIDO**: Almacena los pedidos realizados por los clientes, vinculados a la dirección y el estado del pedido. 📝
+- **HISTORICO_PEDIDO**: Guarda un registro histórico de los cambios en los pedidos. 🔄
+- **PRODUCTO**: Almacena los productos disponibles para la venta, incluyendo detalles como nombre, precio, talla, color y estado. 🛍️
+- **ESTADO_PRODUCTO**: Define el estado del producto (por ejemplo, "disponible", "agotado", etc.). 🚦
 
 ## 💾 Uso de Hibernate
 
-**Hibernate** gestiona la persistencia de datos, lo que significa que las operaciones CRUD (crear, leer, actualizar y eliminar) se hacen de manera eficiente. 
+**Hibernate** gestiona la persistencia de datos y permite realizar operaciones CRUD (crear, leer, actualizar y eliminar) de manera eficiente. Las entidades de **Hibernate** en este proyecto incluyen:
 
-Las principales entidades de **Hibernate** en este proyecto incluyen:
-
-- **Cliente**: Datos del cliente. 👤
-- **Producto**: Información sobre los productos disponibles. 🛍️
-- **OpcionProducto**: Combinaciones de tallas y colores. 🎨
-- **Pedido**: Información de cada pedido realizado. 📝
-- **Direccion**: Dirección de entrega asociada al cliente. 📍
+- **Cliente**: Representa los datos de un cliente, mapeado a la tabla `CLIENTE`. 👤
+- **Producto**: Representa los detalles de un producto, mapeado a la tabla `PRODUCTO`. 🛍️
+- **Pedido**: Representa un pedido realizado, mapeado a la tabla `PEDIDO`. 📝
+- **Direccion**: Representa una dirección de entrega, mapeado a la tabla `DIRECCION`. 📍
+- **EstadoPedido**: Representa el estado de un pedido, mapeado a la tabla `ESTADO_PEDIDO`. 📦
+- **EstadoProducto**: Representa el estado de un producto, mapeado a la tabla `ESTADO_PRODUCTO`. 🚦
 
 ## 🎯 Conclusión
 
